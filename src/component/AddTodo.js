@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Axios from "axios";
 import { Button, TextField } from "@mui/material";
 import { DesktopDatePicker , LocalizationProvider} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -39,6 +40,22 @@ class AddTodo extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.state.content.trim()) {
+      const jsonObject = {   //json object used as a body request to be sent to addItem function in Express application
+        id: this.state.id,
+        task: <value></value>,
+        currentDate: <value></value>,
+        dueDate: <value></value>
+      };
+      Axios({    //makes a POST request the 'addItem' function in Express application and return response msg
+        method: "POST",
+        url: "http://localhost:8080/add/item",
+        data: {jsonObject},
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(res => {
+        console.log(res.data.message);
+      });
       this.props.addTodo(this.state);
       this.setState({
         content: "",
